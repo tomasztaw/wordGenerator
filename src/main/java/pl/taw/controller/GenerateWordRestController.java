@@ -10,6 +10,7 @@ package pl.taw.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import pl.taw.exception.BadRequestException;
 import pl.taw.model.MyResponseObject;
 import pl.taw.service.ChatGPTService;
 
@@ -24,6 +25,10 @@ public class GenerateWordRestController {
 
     @GetMapping("/{word}")
     public MyResponseObject getStringAnswer(@PathVariable("word") String word) {
+        if (word == null || word.isEmpty()) {
+            throw new BadRequestException("Nieprawidłowa wartość 'word'.");
+        }
+
         MyResponseObject responseObject = new MyResponseObject();
         String answer = gptService.getAnswerString(word);
         responseObject.setWord(word);
