@@ -10,7 +10,7 @@ package pl.taw.model;
 import lombok.Data;
 
 @Data
-public class MyResponseObject {
+public class BasicResponse {
 
     private String word;
     private String message;
