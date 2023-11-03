@@ -7,6 +7,7 @@
  */
 package pl.taw.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class GenerateWordRestController {
     }
 
     @GetMapping("/{word}")
-    public BasicResponse getStringAnswer(@PathVariable("word") String word) {
+    public ResponseEntity<BasicResponse> getBasicJsonAnswer(@PathVariable("word") String word) {
         if (word == null || word.isEmpty()) {
             throw new BadRequestException("Nieprawidłowa wartość 'word'.");
         }
@@ -34,6 +35,6 @@ public class GenerateWordRestController {
         basicResponse.setWord(word);
         basicResponse.setMessage(answer);
 
-        return basicResponse;
+        return ResponseEntity.ok(basicResponse);
     }
 }

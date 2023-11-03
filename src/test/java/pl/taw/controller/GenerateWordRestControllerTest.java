@@ -31,7 +31,7 @@ class GenerateWordRestControllerTest {
         when(chatGPTService.getAnswerString(word)).thenReturn("Answer");
 
         // when
-        BasicResponse responseObject = generateWordRestController.getStringAnswer(word);
+        BasicResponse responseObject = generateWordRestController.getBasicJsonAnswer(word).getBody();
 
         // then
         assertNotNull(responseObject);
@@ -45,6 +45,6 @@ class GenerateWordRestControllerTest {
         String word = "";
 
         // when, then
-        assertThrows(BadRequestException.class, () -> generateWordRestController.getStringAnswer(word));
+        assertThrows(BadRequestException.class, () -> generateWordRestController.getBasicJsonAnswer(word));
     }
 }
