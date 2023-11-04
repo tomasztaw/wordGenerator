@@ -76,8 +76,7 @@ input[type="submit"] {
     font-size: 52px;
 }
 
-
-
+/* oczekiwanie */
 .wave {
     width: 6em;
     height: 4em;
@@ -124,4 +123,9 @@ input[type="submit"] {
     20% {
         transform: scaleY(1);
     }
+}
+
+a {
+    color: white;
+    text-decoration: none;
 }

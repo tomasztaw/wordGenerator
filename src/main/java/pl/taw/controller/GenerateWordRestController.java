@@ -24,7 +24,7 @@ public class GenerateWordRestController {
         this.gptService = gptService;
     }
 
-    @GetMapping("/{word}")
+    @GetMapping("basic/{word}")
     public ResponseEntity<BasicResponse> getBasicJsonAnswer(@PathVariable("word") String word) {
         if (word == null || word.isEmpty()) {
             throw new BadRequestException("Nieprawidłowa wartość 'word'.");
