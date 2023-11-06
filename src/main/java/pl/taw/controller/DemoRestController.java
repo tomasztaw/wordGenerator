@@ -12,18 +12,28 @@ import org.springframework.ai.client.AiClient;
 import org.springframework.ai.client.AiResponse;
 import org.springframework.ai.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import pl.taw.model.GeneratedImage;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 @RestController
 public class DemoRestController {
 
     private final AiClient aiClient;
-//    @Value("${openai.api-key}")
-//    private String apiKey;
+
+    @Value("${spring.ai.openai.api-key}")
+    String openaiApiKey;
 
     public DemoRestController(AiClient aiClient) {
         this.aiClient = aiClient;
@@ -81,5 +91,26 @@ public class DemoRestController {
         return generate.getGeneration().getText();
     }
 
+    @GetMapping(value = "/image", produces = "image/jpeg")
+    public ResponseEntity<InputStreamResource> getImage(@RequestParam(name = "topic") String topic) throws URISyntaxException {
+        PromptTemplate promptTemplate = new PromptTemplate("""
+                I'm bored with hello world apps. Can you create me a prompt about {topic}. Enhance the topic I gave you. Make it fancy.
+                Make resolution 256x256 but in Json it needs to be string. I want only 1 creation. Give me as JSON format: prompt, n, size.
+                Do not make any comments. Just JSON file.
+                """);
+        promptTemplate.add("topic", topic);
+        String imagePrompt = this.aiClient.generate(promptTemplate.create()).getGeneration().getText();
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + openaiApiKey);
+        headers.add("Content-Type", "application/json");
+        HttpEntity<String> httpEntity = new HttpEntity<>(imagePrompt,headers);
+
+        String imageUrl = restTemplate.exchange("https://api.openai.com/v1/images/generations", HttpMethod.POST, httpEntity, GeneratedImage.class)
+                .getBody().getData().get(0).getUrl();
+        byte[] imageBytes = restTemplate.getForObject(new URI(imageUrl), byte[].class);
+        return ResponseEntity.ok().body(new InputStreamResource(new java.io.ByteArrayInputStream(imageBytes)));
+    }
 
 }
