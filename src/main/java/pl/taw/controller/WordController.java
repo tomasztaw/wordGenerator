@@ -41,9 +41,7 @@ public class WordController {
 
     @GetMapping("/random")
     public ResponseEntity<Word> getRandomWord() {
-        int size = wordService.getAllWords().size();
-        Random random = new Random();
-        Word result = wordService.getAllWords().get(random.nextInt(size));
+        Word result = wordService.getRandomWord();
         return ResponseEntity.ok(result);
     }
 }

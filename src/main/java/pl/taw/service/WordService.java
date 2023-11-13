@@ -13,6 +13,7 @@ import pl.taw.model.Word;
 import pl.taw.ropository.WordRepository;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class WordService {
@@ -31,4 +32,12 @@ public class WordService {
         Sort sort = Sort.by(Sort.Direction.ASC, "word");
         return wordRepository.findAll(sort);
     }
+
+    public Word getRandomWord() {
+        Random random = new Random();
+        long size = wordRepository.count();
+        return wordRepository.findById(random.nextLong(size))
+                .orElseThrow(() -> new RuntimeException("There is a problem with random word generator"));
+    }
+
 }
