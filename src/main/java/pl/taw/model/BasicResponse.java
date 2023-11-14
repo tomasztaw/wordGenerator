@@ -7,9 +7,13 @@
  */
 package pl.taw.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BasicResponse {
 
     private String word;
