@@ -7,6 +7,8 @@
  */
 package pl.taw.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.taw.model.Word;
@@ -40,4 +42,7 @@ public class WordService {
                 .orElseThrow(() -> new RuntimeException("There is a problem with random word generator"));
     }
 
+    public Page<Word> getPageOfWords(Pageable pageable) {
+        return wordRepository.pageOfWords(pageable);
+    }
 }

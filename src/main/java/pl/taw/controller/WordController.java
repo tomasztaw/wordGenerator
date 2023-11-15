@@ -7,6 +7,8 @@
  */
 package pl.taw.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +17,6 @@ import pl.taw.model.Word;
 import pl.taw.service.WordService;
 
 import java.util.List;
-import java.util.Random;
 
 @RestController
 @RequestMapping("/api/word")
@@ -43,5 +44,12 @@ public class WordController {
     public ResponseEntity<Word> getRandomWord() {
         Word result = wordService.getRandomWord();
         return ResponseEntity.ok(result);
+    }
+
+
+    // GET /api/words/page?page=0&size=10&sort=word,asc
+    @GetMapping("/page")
+    public Page<Word> getPageOfWords(Pageable pageable) {
+        return wordService.getPageOfWords(pageable);
     }
 }
