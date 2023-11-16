@@ -7,10 +7,12 @@
  */
 package pl.taw.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import pl.taw.controller.DemoRestController;
 import pl.taw.model.Word;
 import pl.taw.ropository.WordRepository;
 
@@ -21,9 +23,11 @@ import java.util.Random;
 public class WordService {
 
     private final WordRepository wordRepository;
+    private final DemoRestController demoRestController;
 
-    public WordService(WordRepository wordRepository) {
+    public WordService(WordRepository wordRepository, DemoRestController demoRestController) {
         this.wordRepository = wordRepository;
+        this.demoRestController = demoRestController;
     }
 
     public List<Word> getAllWords() {
@@ -44,5 +48,17 @@ public class WordService {
 
     public Page<Word> getPageOfWords(Pageable pageable) {
         return wordRepository.pageOfWords(pageable);
+    }
+
+    @Transactional
+    public void processNextWord() {
+        Word word = wordRepository.findFirstByUsedFalse();
+
+        if (word != null) {
+            demoRestController.fullDescriptionWordNew(word.getWord());
+
+            word.setUsed(true);
+            wordRepository.save(word);
+        }
     }
 }

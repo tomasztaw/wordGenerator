@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/word_generator
-    username: postgres
-    password: postgres
+    url: ${db.url}
+    username: ${db.username}
+    password: ${db.password}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -12,3 +12,12 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration/prod
+
+
+
+#    url: ${DATABASE_URL}
+#    username: ${DATABASE_USERNAME}
+#    password: ${DATABASE_PASSWORD}
+#    url: jdbc:postgresql://localhost:5432/word_generator
+#    username: postgres
+#    password: postgres

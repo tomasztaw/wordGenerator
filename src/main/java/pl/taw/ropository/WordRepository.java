@@ -12,4 +12,6 @@ public interface WordRepository extends JpaRepository<Word, Long> {
     @Query("SELECT w FROM Word w")
     Page<Word> pageOfWords(Pageable pageable);
 
+    Word findFirstByUsedFalse();
+
 }
