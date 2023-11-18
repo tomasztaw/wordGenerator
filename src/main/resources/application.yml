@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: dev
+
+  import:
+    - classpath:application-${spring.profiles.active}.yml
+
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/word_generator
+#    username: postgres
+#    password: postgres
+#    driver-class-name: org.postgresql.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#
+#  flyway:
+#    enabled: true
+#    locations: classpath:db/migration
+
+
+
+#USTAWIENIE PRODUKCJI
+#  export SPRING_PROFILES_ACTIVE=prod
+#  java -jar your-application.jar
+
+#ALBO
+#  java -jar your-application.jar --spring.profiles.active=prod
