@@ -35,5 +35,5 @@ build/
 secrets.properties
 
 .env
-docker-compose.yml
-Dockerfile
+#docker-compose.yml
+#Dockerfile
